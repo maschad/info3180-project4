@@ -1,0 +1,42 @@
+<form>
+    <div class="form-group row">
+        <label for="itemName" class="col-sm-2 form-control-label">Item Name</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" ng-model="itemName" placeholder="item name">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="image_url" class="col-sm-2 form-control-label">URL</label>
+        <div class="col-sm-10">
+            <input type="url" class="form-control" id="image_url"  ng-blur="getImage(url)" placeholder="url" ng-model="url">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="img" class="col-sm-2 form-control-label">Image</label>
+        <img id="img" ng-src="{{ imgUrl }}" class="preview img-responsive img-circle">
+    </div>
+    <div class="form-group-sm">
+        <button class="btn btn-primary" ng-click="getImage(url)"><i class="glyphicon glyphicon-camera"></i></button>
+    </div>
+    <div class="row" ng-show="imgUrl">
+            <h2>Choose Another image</h2>
+    </div>
+    <div class="col-xs-2" ng-repeat="image in images">
+      <a href=""><img src="{{image.url}}" ng-click="chooseAnother(image.url)" class="thumb"/></a>
+    </div>
+  </div>
+
+  <div class="row" ng-show="imgUrl">
+    <div class="col-xs-12">
+      <label for="description">Description</label></br>
+      <textarea ng-model="description" class="form-control" rows="8"></textarea>
+    </div>
+  </div>
+
+  <div class="row" ng-show="imgUrl">
+    <div class="col-xs-12">
+      <button class="btn btn-default" ng-click="addItem(url,itemName,description)">Add Item <i class="glyphicon glyphicon-plus"></i></button>
+    </div>
+  </div>
+
+</form>
