@@ -24,13 +24,6 @@ def verify_password(username_or_token, password):
     return True
 
 # routes
-@app.route('/api/user/token')
-@auth.login_required
-def get_auth_token():
-    token = g.user.generate_auth_token()
-    return jsonify({'token': token.decode('ascii')})
-
-
 @app.route('/api/user/resource')
 @auth.login_required
 def get_resource():
@@ -68,7 +61,10 @@ def login():
         status = True
     else:
         status = False
-    return jsonify({'result':status})
+    toRet = user.__repr__()
+    toRet['status'] = status
+    toRet['token'] = user.generate_auth_token()
+    return jsonify(toRet)
 
 
 @app.route('/api/user/logout', methods=['GET', 'POST'])
@@ -86,8 +82,7 @@ def add_item(user_id):
     item = Item(name, description, url, user_id)
     db.session.add(item)
     db.session.commit()
-    response = jsonify({'name': item.name, 'description': item.description, 'url': url})
-    return response
+    return jsonify({'name': item.name, 'description': item.description, 'url': url})
 
 
 @app.route('/api/user/<user_id>/wishlist', methods=['GET'])
@@ -95,8 +90,7 @@ def add_item(user_id):
 def view(user_id):
     user = db.session.query(User).filter_by(id=user_id).first()
     items = user.items
-    result = {'items': items, 'firstname': user.firstname, 'lastname': user.lastname}
-    return jsonify(result)
+    return jsonify({'items': items, 'firstname': user.firstname, 'lastname': user.lastname})
 
 
 @app.route('/api/thumbnail/process', methods=['POST'])

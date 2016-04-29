@@ -45,7 +45,7 @@ class User(db.Model):
         return self.id
 
     def __repr__(self):
-        return '<User {0}>'.format(self.email)
+        return {'id': self.id, 'name': self.name, 'email': self.email}
 
     def generate_auth_token(self, expiration=600):
         s = Serializer(app.config['SECRET_KEY'], expires_in=expiration)

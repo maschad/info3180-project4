@@ -21,9 +21,8 @@ angular.module('myApp')
         var deferred = $q.defer();
 
         $http.post('/api/user/login', {email: email, password: password})
-
             .success(function (data, status) {
-            if(status==200 && data.result){
+                if (status == 200 && data) {
                 user = true;
                 deferred.resolve();
             }else{
