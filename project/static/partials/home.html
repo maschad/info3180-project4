@@ -13,7 +13,7 @@
                 <div class="text-info">
                     {{ item.description }}
                 </div>
-                <button ng-click="data.emailForm = !data.emailForm;" class="glyphicon glyphicon-envelope"></button>
+                <button ng-click="sendEmail(item)" class="glyphicon glyphicon-envelope"></button>
             </div>
         </div>
     </div>
@@ -38,6 +38,9 @@
             <div class="row">
                 <div class="col-xs-9">
                     <h3>{{ title }}</h3>
+                    <div class="col-xs-3">
+                        <img ng-src="{{ imgUrl }}" class="preview img-responsive img-circle">
+                    </div>
                 </div>
             </div>
             <div class="row">

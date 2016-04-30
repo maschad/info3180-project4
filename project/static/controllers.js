@@ -42,6 +42,32 @@ angular.module('myApp').controller('loginController',
                 emailForm: false
             };
 
+            //To open up the email form
+            $scope.sendEmail = function (item) {
+                $scope.data.emailForm = true;
+                $scope.title = item.name;
+                $scope.url = item.url;
+                $scope.imgUrl = item.image_url;
+            };
+
+            //To send the actual email
+            $scope.send = function () {
+                $http.post('/api/user/' + $cookies.get('id') + '/share', {
+                    title: $scope.title,
+                    image_url: $scope.imgUrl,
+                    email: $scope.email,
+                    message: $scope.message,
+                    url: $scope.url
+                })
+                    .success(function (data, status) {
+                        $scope.data.emailForm = false;
+                        alert('email sent');
+                    })
+                    .error(function (error, status) {
+                        $log.log(error);
+                    });
+            };
+
             //Not in services due to simplicity in get request
             $http.get('/api/user/' + $cookies.get('id') + '/wishlist')
                 .success(function (data, status) {
@@ -127,7 +153,7 @@ angular.module('myApp').controller('loginController',
         ItemManagerService.storeItem(item)
             .then(function () {
                 $location.path('/home');
-                $log.log('added');
+                alert('added');
             })
             .catch(function (data) {
                 $log.log(data)
