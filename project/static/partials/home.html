@@ -1,8 +1,25 @@
 
 <br/>
-<h1>Welcome</h1>
-<div class="col-xs-2" ng-repeat="item in items">
-    <img src="{{ item.image_url }}" class="thumb">
+<div class="container">
+    <h1>Welcome</h1>
+    <h3>Here is your current wishlist</h3>
+    <div class="col-xs-2" ng-repeat="item in items">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                {{ item.name }}
+            </div>
+            <div class="panel-body">
+                <img src="{{ item.image_url }}" class="preview img-responsive img-circle">
+                <div class="text-info">
+                    {{ item.description }}
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
+
 <br/>
-<a ng-click='logout()' class="btn btn-danger">Logout</a>
+<div class="footer">
+    <a ng-click='logout()' class="btn btn-danger">Logout</a>
+</div>
