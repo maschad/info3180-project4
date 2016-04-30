@@ -80,7 +80,8 @@ def add_item(user_id):
     name = data['name']
     description = data['description']
     url = data['url']
-    item = Item(name, description, user_id, url)
+    image_url = data['image_url']
+    item = Item(name, description, user_id, url, image_url)
     db.session.add(item)
     db.session.commit()
     return jsonify({'name': name, 'description': description, 'url': url})
@@ -90,8 +91,11 @@ def add_item(user_id):
 @auth.login_required
 def view(user_id):
     user = db.session.query(User).filter_by(id=user_id).first()
-    items = user.items
-    return jsonify({'items': items, 'firstname': user.firstname, 'lastname': user.lastname})
+    items = []
+    for item in user.items:
+        items.append(item.__repr__())
+    print items
+    return jsonify({'items': items})
 
 
 @app.route('/api/user/<user_id>/wishlist/<item_id>', methods=['GET'])

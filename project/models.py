@@ -69,14 +69,16 @@ class Item(db.Model):
     name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text)
     url = db.Column(db.String(1000), nullable=False)
+    image_url = db.Column(db.String(1000), nullable=False)
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    def __init__(self, name, description, owner_id, url):
+    def __init__(self, name, description, owner_id, url, image_url):
         self.name = name
         self.url = url
         self.description = description
         self.owner_id = owner_id
+        self.image_url = image_url
 
     def __repr__(self):
         return {'id': self.id, 'name': self.name, 'description': self.description, 'url': self.url,
-                'user': self.user_id}
+                'user': self.owner_id, 'image_url': self.image_url}

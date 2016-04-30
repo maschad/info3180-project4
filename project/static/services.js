@@ -80,7 +80,7 @@ angular.module('myApp').factory('AuthService', ['$q', '$timeout', '$http', '$coo
 
 }])
 
-    .factory('ItemManagerService', ['$q', '$http', '$cookies', function ($q, $http, $cookies) {
+    .factory('ItemManagerService', ['$q', '$log', '$http', '$cookies', function ($q, $log, $http, $cookies) {
     return({
         storeItem: storeItem,
         removeItem: removeItem
@@ -112,7 +112,7 @@ angular.module('myApp').factory('AuthService', ['$q', '$timeout', '$http', '$coo
                     if (status == 200 && data) {
                         deferred.resolve();
                     } else {
-                        deferred.reject();
+                    deferred.reject();
                     }
                 })
                 .error(function (data) {

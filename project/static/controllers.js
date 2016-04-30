@@ -34,9 +34,21 @@ angular.module('myApp').controller('loginController',
   }])
 
 .controller('homeController',
-        ['$scope', '$location', 'AuthService', '$cookies', '$rootScope',
-            function ($scope, $location, AuthService, $cookies, $rootScope) {
+    ['$scope', '$location', 'AuthService', '$http', '$log', '$cookies', '$rootScope', 'ItemManagerService',
+        function ($scope, $location, AuthService, $http, $log, $cookies, $rootScope, ItemManagerService) {
 
+            //Not in services due to simplicity in get request
+            $http.get('/api/user/' + $cookies.get('id') + '/wishlist')
+                .success(function (data, status) {
+                    if (status == 200 && data) {
+                        console.log(data.items);
+                        $scope.items = data.items;
+                    }
+                })
+                .error(function (data) {
+                    $log.log(data)
+                });
+                
     $scope.logout = function () {
 
         // call logout from servic
@@ -104,13 +116,14 @@ angular.module('myApp').controller('loginController',
         var item = {
             url: url,
             name: name,
-            description: description
+            description: description,
+            image_url: $scope.imgUrl
         };
 
         ItemManagerService.storeItem(item)
             .then(function () {
                 $location.path('/home');
-                console.log('added');
+                $log.log('added');
             })
             .catch(function (data) {
                 $log.log(data)

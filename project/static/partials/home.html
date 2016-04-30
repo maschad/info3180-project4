@@ -1,5 +1,8 @@
 
 <br/>
 <h1>Welcome</h1>
+<div class="col-xs-2" ng-repeat="item in items">
+    <img src="{{ item.image_url }}" class="thumb">
+</div>
 <br/>
 <a ng-click='logout()' class="btn btn-danger">Logout</a>
