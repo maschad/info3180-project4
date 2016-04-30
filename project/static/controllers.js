@@ -16,7 +16,6 @@ angular.module('myApp').controller('loginController',
       AuthService.login($scope.loginForm.email, $scope.loginForm.password)
         // handle success
         .then(function () {
-            $cookies.put('online', true);
             $rootScope.user = true;
             $location.path('/home');
           $scope.disabled = false;
@@ -40,12 +39,11 @@ angular.module('myApp').controller('loginController',
 
     $scope.logout = function () {
 
-      // call logout from service
+        // call logout from servic
       AuthService.logout()
         .then(function () {
-            $cookies.put('online', false);
             $rootScope.user = false;
-          $location.path('/login');
+            $location.path('/login');
         });
 
     };
@@ -84,17 +82,18 @@ angular.module('myApp').controller('loginController',
 
   }])
 
-.controller('addController', ['$scope', '$location', '$http', '$log','$cookies','ItemManagerService',
-  function ($scope, $location, $http, $log,$cookies,ItemManagerService) {
+    .controller('addController', ['$scope', '$location', '$http', '$log', 'ItemManagerService',
+        function ($scope, $location, $http, $log, ItemManagerService) {
 
     $scope.getImage = function (url) {
+        //This is not a service since it's  a simple http request
         $http.post('/api/thumbnail/process', {'url': url})
           .success(function (data) {
             $scope.images = data.images;
             $scope.imgUrl = $scope.images[0];
           }).error(function (data) {
-        $log.log(data);
-      })
+            $log.log(data);
+        })
     };
 
     $scope.chooseAnother = function (image) {
@@ -105,12 +104,18 @@ angular.module('myApp').controller('loginController',
         var item = {
             url: url,
             name: name,
-            description : description
+            description: description
         };
-        var user = {
-            id : $cookies.get('user_id'),
-            
-        }
+
+        ItemManagerService.storeItem(item)
+            .then(function () {
+                $location.path('/home');
+                console.log('added');
+            })
+            .catch(function (data) {
+                $log.log(data)
+            });
     };
-  }]);
+
+        }]);
 

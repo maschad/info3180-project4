@@ -68,7 +68,7 @@ class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text)
-    url = db.Column(db.String(1000))
+    url = db.Column(db.String(1000), nullable=False)
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __init__(self, name, description, owner_id, url):

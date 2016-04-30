@@ -22,7 +22,7 @@
             <h2>Choose Another image</h2>
     </div>
     <div class="col-xs-2" ng-repeat="image in images">
-      <a href=""><img src="{{image.url}}" ng-click="chooseAnother(image.url)" class="thumb"/></a>
+        <a href=""><img src="{{ image }}" ng-click="chooseAnother(image.url)" class="thumb"/></a>
     </div>
   </div>
 

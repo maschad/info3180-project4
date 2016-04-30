@@ -4,6 +4,7 @@ import BeautifulSoup
 import requests
 from flask import request, jsonify, session, g
 from flask.ext.httpauth import HTTPBasicAuth
+from werkzeug.datastructures import MultiDict
 
 from project import app, db
 from project.models import User, Item
@@ -75,14 +76,14 @@ def logout():
 
 @app.route('/api/user/<user_id>/wishlist', methods=['POST'])
 def add_item(user_id):
-    data = request.get_json()
+    data = MultiDict(mapping=request.json)
     name = data['name']
     description = data['description']
     url = data['url']
-    item = Item(name, description, url, user_id)
+    item = Item(name, description, user_id, url)
     db.session.add(item)
     db.session.commit()
-    return jsonify({'name': item.name, 'description': item.description, 'url': url})
+    return jsonify({'name': name, 'description': description, 'url': url})
 
 
 @app.route('/api/user/<user_id>/wishlist', methods=['GET'])
@@ -91,6 +92,12 @@ def view(user_id):
     user = db.session.query(User).filter_by(id=user_id).first()
     items = user.items
     return jsonify({'items': items, 'firstname': user.firstname, 'lastname': user.lastname})
+
+
+@app.route('/api/user/<user_id>/wishlist/<item_id>', methods=['GET'])
+@auth.login_required
+def view_item(user_id, item_id):
+    return jsonify()
 
 
 @app.route('/api/thumbnail/process', methods=['POST'])
@@ -103,8 +110,6 @@ def getImage():
     result = requests.get(url).text
     soup = BeautifulSoup.BeautifulSoup(result)
     for img in soup.findAll("img", src=True):
-        if not 'gif' in img.get('src') and not 'png' in img.get('src') and not 'sprite' in img.get('src'):
+        if not 'gif' in img['src'] and not 'png' in img['src'] and not 'sprite' in img['src']:
             images.append(urlparse.urljoin(url, img["src"]))
-
-    print images[0]
     return jsonify({'images': images})
