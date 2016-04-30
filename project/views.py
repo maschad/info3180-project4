@@ -1,3 +1,4 @@
+import smtplib
 import urlparse
 
 import BeautifulSoup
@@ -102,6 +103,46 @@ def view(user_id):
 @auth.login_required
 def view_item(user_id, item_id):
     return jsonify()
+
+
+@app.route('/api/user/<user_id>/share')
+@auth.login_required
+def share(user_id):
+    data = request.get_json()
+    item = data['url']
+    title = data['name']
+    email = data['email']
+    itemUrl = data['url']
+    fromaddr = 'chad.nehemiah@gmail.com'
+    user = db.session.query(User).filter_by(id=user_id).first()
+    subject = 'Please buy this for %s' % (user.name)
+
+    message = """From: {} <{}>
+    To: {} <{}>
+    Subject: {}
+
+    <a href={}></a>
+    """
+
+    messagetosend = message.format(
+        user.name,
+        fromaddr,
+        subject,
+        email,
+        subject,
+        message,
+        item,
+        title,
+        itemUrl)
+
+    username = 'chad.nehemiah@gmail.com'
+    password = 'pass'
+    server = smtplib.SMTP('smtp.gmail.com:587')
+    server.starttls()
+    server.login(username, password)
+    server.sendmail(username, email, messagetosend)
+    server.quit()
+    return jsonify({'message': 'Shared'})
 
 
 @app.route('/api/thumbnail/process', methods=['POST'])
