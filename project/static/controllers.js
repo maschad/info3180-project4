@@ -37,11 +37,15 @@ angular.module('myApp').controller('loginController',
     ['$scope', '$location', 'AuthService', '$http', '$log', '$cookies', '$rootScope', 'ItemManagerService',
         function ($scope, $location, AuthService, $http, $log, $cookies, $rootScope, ItemManagerService) {
 
+            //Whether to show the email form or not
+            $scope.data = {
+                emailForm: false
+            };
+
             //Not in services due to simplicity in get request
             $http.get('/api/user/' + $cookies.get('id') + '/wishlist')
                 .success(function (data, status) {
                     if (status == 200 && data) {
-                        console.log(data.items);
                         $scope.items = data.items;
                     }
                 })

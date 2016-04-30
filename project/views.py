@@ -95,7 +95,6 @@ def view(user_id):
     items = []
     for item in user.items:
         items.append(item.__repr__())
-    print items
     return jsonify({'items': items})
 
 
