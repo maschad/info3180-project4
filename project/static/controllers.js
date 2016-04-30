@@ -67,6 +67,16 @@ angular.module('myApp').controller('loginController',
                         $log.log(error);
                     });
             };
+            //To remove Items
+            $scope.remove = function (item) {
+                ItemManagerService.remove(item.id)
+                    .then(function (data) {
+                        alert('item deleted');
+                    })
+                    .catch(function (error) {
+                        $log.log(error)
+                    })
+            };   
 
             //Not in services due to simplicity in get request
             $http.get('/api/user/' + $cookies.get('id') + '/wishlist')

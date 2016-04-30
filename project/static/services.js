@@ -107,7 +107,7 @@ angular.module('myApp').factory('AuthService', ['$q', '$timeout', '$http', '$coo
         function removeItem(itemId) {
             var deferred = $q.defer();
 
-            $http.post('/api/user/' + $cookies.get('id') + itemId + '/wishlist')
+            $http.delete('/api/user/' + itemId + '/wishlist')
                 .success(function (data, status) {
                     if (status == 200 && data) {
                         deferred.resolve();

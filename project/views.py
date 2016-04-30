@@ -98,6 +98,14 @@ def view(user_id):
     return jsonify({'items': items})
 
 
+@app.route('/api/user/<item_id>/wishlist', methods=['DELETE'])
+@auth.login_required
+def delete(item_id):
+    db.session.query(Item).filter_by(id=item_id).delete()
+    db.session.commit()
+    return jsonify({'status': True})
+
+
 @app.route('/api/user/<user_id>/wishlist/<item_id>', methods=['GET'])
 @auth.login_required
 def view_item(user_id, item_id):
