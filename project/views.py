@@ -68,7 +68,7 @@ def login():
     toRet['token'] = user.generate_auth_token()
     return jsonify(toRet)
 
-
+##Logout route
 @app.route('/api/user/logout', methods=['GET', 'POST'])
 def logout():
     session.pop('logged_in',None)
